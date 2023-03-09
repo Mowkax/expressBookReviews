@@ -96,7 +96,7 @@ regd_users.delete("/auth/review/:isbn", ( req, res ) => {
   {
     // Filter review array elements
     books[ isbn ]["reviews"] = books[ isbn ]["reviews"].filter( elem => elem["username"] != user["data"] );
-
+    result["messages"].push( `Review for the book with ISBN ${isbn}, from user: ${user["data"]} deleted!` )
   }
   
   return res.status( result["isSuccess"] ? 200 : 500 ).json( result );

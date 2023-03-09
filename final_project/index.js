@@ -3,6 +3,10 @@ const jwt = require('jsonwebtoken');
 const session = require('express-session')
 const customer_routes = require('./router/auth_users.js').authenticated;
 const genl_routes = require('./router/general.js').general;
+
+// Import async functions for fetching the books
+const { getBooksAsync, getBooksByIsbnAsync, getBooksByAuthorAsync, getBooksByTitleAsync } = require('./router/general.js').asyncFunctions;
+
 const mySecretKey = "fingerprint_customer";
 
 const app = express();
@@ -46,7 +50,7 @@ app.use("/customer/auth/*", function auth(req,res,next){
 
 
 });
- 
+
 const PORT = 5000;
 
 app.use("/customer", customer_routes);

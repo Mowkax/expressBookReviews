@@ -63,6 +63,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     result["messages"].push( INVALID_ISBN_ERR );
     result["isSuccess"] = false;
   }
+  // Determine whether a review needs to be updated/created 
   else
   {
     const reviewExists = books[ isbn ]["reviews"].some( entry => entry["username"] ==  user["data"] )
@@ -78,6 +79,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   return res.status( result["isSuccess"] ? 200 : 500 ).json( result );
 });
 
+// Delete existing reviews which belong to the user currently logged in
 regd_users.delete("/auth/review/:isbn", ( req, res ) => {
   const INVALID_ISBN_ERR = "No book with such ISBN exists!";
   const result = { "messages": [], "isSuccess": true };

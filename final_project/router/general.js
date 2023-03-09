@@ -5,6 +5,53 @@ let books = require("./booksdb.js");
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
+// ***** [START] ***** \\
+// APIs implemented in an asynchronous way as functions
+const getBooksAsync = async () => 
+{
+  const url = "http://localhost:5000/";
+  const result = await axios.get( url );
+  return result;
+}
+
+const getBooksByIsbnAsync = async ( isbn ) =>
+{
+  const url = `http://localhost:5000/isbn/${isbn}`;
+  const result = await axios.get( url );
+  return result;
+}
+
+const getBooksByAuthorAsync = ( author ) => {
+  const bookKeys = Object.keys( books );
+  
+  let resultList = [];
+
+  //Filter books by authors
+  bookKeys.forEach( key => books[ key ]["author"] == author ? resultList.push( books[key] ) : null );
+
+  return new Promise( ( resolve, reject ) => {
+    setTimeout( () => { resolve( resultList ) }, 2000);
+  })
+
+}
+
+const getBooksByTitleAsync = ( title ) => {
+  const bookKeys = Object.keys( books );
+  
+  let resultList = [];
+
+  //Filter books by authors
+  bookKeys.forEach( key => books[ key ]["title"] == title ? resultList.push( books[key] ) : null );
+  
+  return new Promise( ( resolve, reject ) => {
+    setTimeout( () => { resolve( resultList ) }, 2000);
+  });
+
+}
+
+// ***** [END] ***** \\
+
+
 
 public_users.post("/register", (req,res) => {
   const INVALID_CREDS_ERR = "Invalid username/password provided. \nUsername and password must be non - empty!";
@@ -101,4 +148,4 @@ public_users.get('/review/:isbn',function (req, res) {
 });
 
 module.exports.general = public_users;
-module.exports = { }
+module.exports.asyncFunctions = { getBooksAsync, getBooksByIsbnAsync, getBooksByAuthorAsync, getBooksByTitleAsync };
